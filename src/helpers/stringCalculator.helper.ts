@@ -1,16 +1,7 @@
 import { Operation } from '../enums/operation.enum';
 
 export function detectOperation(delimiter: string) {
-    // return Operation.Addition; //If we have more operators to add we can use switch case instead of If condition.
-    switch (delimiter) {
-        case '+':
-            return Operation.Addition;
-        default:
-            return Operation.Addition;  // Default to addition if no specific operator is given
-    }
-    // if(delimiter === '+'){ // If we have more operators to add we can use switch case instead of If condition.
-    //     return Operation.Addition;
-    // }
+    return Operation.Addition; //If we have more operators to add we can use switch case instead of If condition.
 }
 
 export function extractDelimiter(input: string): { rawDelimiter: string, delimiter: RegExp, numbersSection: string } {
@@ -18,7 +9,6 @@ export function extractDelimiter(input: string): { rawDelimiter: string, delimit
         const delimiterEndIndex = input.indexOf("\n");
         const rawDelimiter = input.substring(2, delimiterEndIndex);
         
-        // Escape special regex characters in the delimiter for RegExp construction
         const escapedDelimiter = rawDelimiter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         
         const numbersSection = input.substring(delimiterEndIndex + 1);

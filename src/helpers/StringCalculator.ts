@@ -1,4 +1,3 @@
-import { Operation } from '../enums/operation.enum';
 import {
     detectOperation,
     extractDelimiter, 
@@ -8,28 +7,20 @@ import {
 
 export class StringCalculator {
     calculate(input: string): number {
-        console.log('input', input);
         if (!input) {
             return 0;
         }
 
         const { rawDelimiter, delimiter, numbersSection } = extractDelimiter(input);
-        const operation = detectOperation(rawDelimiter);  // Detect operation using the raw delimiter
+        const operation = detectOperation(rawDelimiter); // this is to identify the delemiter!
         const numList = splitNumbers(numbersSection, delimiter);
 
         validateNoNegatives(numList);
 
-        return this.applyOperation(numList, operation);
+        return this.applyOperation(numList);
     }
 
-    private applyOperation(numbers: number[], operation: Operation): number {
-        switch (operation) {
-            case Operation.Addition:
-            default:
-                return numbers.reduce((sum, num) => sum + num, 0);
-        }
-        // console.log('numbers', numbers);
-        // console.log('operation', operation);
-        // return numbers.reduce((sum, num) => sum + num, 0);
+    private applyOperation(numbers: number[]): number {
+        return numbers.reduce((sum, num) => sum + num, 0);
     }
 }
