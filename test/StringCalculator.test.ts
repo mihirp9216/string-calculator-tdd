@@ -24,4 +24,24 @@ describe('StringCalculator', () => {
     it('should return the sum of multiple numbers', () => {
         expect(calculator.calculate('1,2,3,4,5')).to.equal(15);
     });
+
+    it('should handle numbers with whitespace', () => {
+        expect(calculator.calculate(' 1 , 2 , 3 ')).to.equal(6);
+    });
+
+    it('should ignore empty values caused by extra commas', () => {
+        expect(calculator.calculate('1,,2,3')).to.equal(6);
+    });
+
+    it('should handle new lines as delimiters', () => {
+        expect(calculator.calculate('1\n2,3')).to.equal(6);
+    });
+
+    it('should throw an error when a negative number is provided', () => {
+        expect(() => calculator.calculate('1,-2,3')).to.throw('Negative numbers are not allowed');
+    });
+
+    it('should throw an error when multiple negatives are provided', () => {
+        expect(() => calculator.calculate('1,-2,-3,4')).to.throw('Negative numbers are not allowed');
+    });
 })
