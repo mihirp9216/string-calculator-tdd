@@ -1,41 +1,38 @@
-import { Operation } from '../enums/operation.enum';
-
-export function detectOperation(delimiter: string) {
-    // return Operation.Addition; //If we have more operators to add we can use switch case instead of If condition.
-    switch (delimiter) {
-        case '+':
-            return Operation.Addition;
-        default:
-            return Operation.Addition;  // Default to addition if no specific operator is given
-    }
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.detectOperation = detectOperation;
+exports.extractDelimiter = extractDelimiter;
+exports.splitNumbers = splitNumbers;
+exports.validateNoNegatives = validateNoNegatives;
+const operation_enum_1 = require("../enums/operation.enum");
+function detectOperation(delimiter) {
+    return operation_enum_1.Operation.Addition; //If we have more operators to add we can use switch case instead of If condition.
+    // switch (delimiter) {
+    //     case '+':
+    //         return Operation.Addition;
+    //     default:
+    //         return Operation.Addition;  // Default to addition if no specific operator is given
+    // }
     // if(delimiter === '+'){ // If we have more operators to add we can use switch case instead of If condition.
     //     return Operation.Addition;
     // }
 }
-
-export function extractDelimiter(input: string): { rawDelimiter: string, delimiter: RegExp, numbersSection: string } {
+function extractDelimiter(input) {
     if (input.startsWith("//")) {
         const delimiterEndIndex = input.indexOf("\n");
         const rawDelimiter = input.substring(2, delimiterEndIndex);
-        
         // Escape special regex characters in the delimiter for RegExp construction
         const escapedDelimiter = rawDelimiter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        
         const numbersSection = input.substring(delimiterEndIndex + 1);
         return { rawDelimiter, delimiter: new RegExp(escapedDelimiter), numbersSection };
     }
-
     return { rawDelimiter: ',', delimiter: /,|\n/, numbersSection: input };
 }
-
-
-export function splitNumbers(numbers: string, delimiter: RegExp): number[] {
-    const numList: number[] = [];
+function splitNumbers(numbers, delimiter) {
+    const numList = [];
     let currentNumber = '';
-
     for (let i = 0; i < numbers.length; i++) {
         const char = numbers[i];
-
         if (char.match(delimiter)) {
             if (currentNumber.trim() !== '') {
                 const num = parseInt(currentNumber.trim(), 10);
@@ -44,22 +41,20 @@ export function splitNumbers(numbers: string, delimiter: RegExp): number[] {
                 }
             }
             currentNumber = '';
-        } else {
+        }
+        else {
             currentNumber += char;
         }
     }
-
     if (currentNumber.trim() !== '') {
         const num = parseInt(currentNumber.trim(), 10);
         if (!isNaN(num)) {
             numList.push(num);
         }
     }
-
     return numList;
 }
-
-export function validateNoNegatives(numbers: number[]): void {
+function validateNoNegatives(numbers) {
     const negatives = numbers.filter(num => num < 0);
     if (negatives.length > 0) {
         throw new Error(`Negative numbers not allowed: ${negatives.join(', ')}`);
